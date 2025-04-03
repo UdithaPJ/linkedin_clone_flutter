@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:linkedin_clone_flutter/ui/views/signup_page3.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/utils/constants.dart';
+import '../../viewmodels/signup_viewmodel.dart';
 
 class SignupPage2 extends StatelessWidget {
-  const SignupPage2({super.key});
+  SignupPage2({super.key});
+  final _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final signupViewModel = Provider.of<SignupViewModel>(context);
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -47,6 +52,7 @@ class SignupPage2 extends StatelessWidget {
                       ),
                       SizedBox(height: 40),
                       TextFormField(
+                        controller: _emailController,
                         decoration: InputDecoration(
                           labelText: "Email or Phone*",
                         ),
@@ -57,6 +63,10 @@ class SignupPage2 extends StatelessWidget {
                         height: 55,
                         child: ElevatedButton(
                           onPressed: () {
+                            final signupData = signupViewModel.signupData;
+                            signupViewModel.updateEmail(_emailController.text.trim());
+                            print(signupData.fullName);
+                            print(signupData.email);
                             Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage3(),),);
                           },
                           style: ButtonStyle(

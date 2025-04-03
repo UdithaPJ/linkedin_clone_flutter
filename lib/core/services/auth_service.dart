@@ -12,6 +12,7 @@ class AuthService {
 
       UserModel user = UserModel(uid: userCredential.user!.uid, name: name, email: email);
       await _firestore.collection('users').doc(user.uid).set(user.toMap());
+      return user;
     } on FirebaseAuthException catch (e) {
       print('Authentication error: $e');
       //showSnackBar(context, e.message!);

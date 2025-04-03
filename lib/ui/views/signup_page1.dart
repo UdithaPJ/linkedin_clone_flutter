@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:linkedin_clone_flutter/ui/views/signup_page2.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/utils/constants.dart';
+import '../../viewmodels/signup_viewmodel.dart';
 
 class SignupPage1 extends StatelessWidget {
-  const SignupPage1({super.key});
+  SignupPage1({super.key});
+  final _firstnameController = TextEditingController();
+  final _lastnameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final signupViewModel = Provider.of<SignupViewModel>(context);
+
     return SafeArea(
         child: Scaffold(
           backgroundColor: Colors.white,
@@ -47,12 +53,14 @@ class SignupPage1 extends StatelessWidget {
                         ),
                         SizedBox(height: 40),
                         TextFormField(
+                          controller: _firstnameController,
                           decoration: InputDecoration(
                             labelText: "First name*",
                           ),
                         ),
                         SizedBox(height: 30),
                         TextFormField(
+                          controller: _lastnameController,
                           decoration: InputDecoration(
                             labelText: "Last name*",
                           ),
@@ -63,6 +71,9 @@ class SignupPage1 extends StatelessWidget {
                           height: 55,
                           child: ElevatedButton(
                               onPressed: () {
+                                final signupData = signupViewModel.signupData;
+                                signupViewModel.updateName(_firstnameController.text.trim(), _lastnameController.text.trim());
+                                print(signupData.fullName);
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage2(),),);
                               },
                             style: ButtonStyle(

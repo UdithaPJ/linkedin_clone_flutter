@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:linkedin_clone_flutter/ui/views/home_page.dart';
 import 'package:linkedin_clone_flutter/ui/views/welcome_page.dart';
 import 'package:linkedin_clone_flutter/viewmodels/auth_viewmodel.dart';
+import 'package:linkedin_clone_flutter/viewmodels/signup_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 //import 'firebase_options.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
+        ChangeNotifierProvider(create: (_) => SignupViewModel()),
       ],
       child: Consumer<AuthViewModel>(
         builder: (context, authViewModel, _) {
