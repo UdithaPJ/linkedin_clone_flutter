@@ -4,6 +4,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:linkedin_clone_flutter/core/utils/constants.dart';
 import 'package:linkedin_clone_flutter/ui/views/forgotpassword_page.dart';
 import 'package:linkedin_clone_flutter/ui/views/signup_page.dart';
+import 'package:linkedin_clone_flutter/ui/views/home_page.dart';
+import 'package:linkedin_clone_flutter/viewmodels/auth_viewmodel.dart';
+import 'package:provider/provider.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,10 +17,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool isMarkedRemember = false;
+  bool _isMarkedRemember = false;
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final authViewModel = Provider.of<AuthViewModel>(context);
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -211,12 +219,14 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       SizedBox(height: 20),
                       TextFormField(
+                        controller: _emailController,
                         decoration: InputDecoration(
                           labelText: "Email or Phone*",
                         ),
                       ),
                       SizedBox(height: 30),
                       TextFormField(
+                        controller: _passwordController,
                         decoration: InputDecoration(
                           labelText: "Password*",
                         ),
@@ -227,9 +237,9 @@ class _LoginPageState extends State<LoginPage> {
                         children: [
                           Checkbox(
                             activeColor: Color(0xFF006a43),
-                            value: isMarkedRemember, onChanged: (value) {
+                            value: _isMarkedRemember, onChanged: (value) {
                             setState(() {
-                              isMarkedRemember = value!;
+                              _isMarkedRemember = value!;
                             });
                           },
                           ),
@@ -274,8 +284,14 @@ class _LoginPageState extends State<LoginPage> {
                         width: double.infinity,
                         height: 55,
                         child: ElevatedButton(
-                          onPressed: () {
-                            //Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotpasswordPage(),),);
+                          onPressed: () async {
+                            await authViewModel.signIn(_emailController.text.trim(), _passwordController.text.trim());
+                            print('Logged in successfully!');
+                            print(authViewModel.user);
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(),),);
+                            // if(authViewModel.user != null) {
+                            //   Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(),),);
+                            // }
                           },
                           style: ButtonStyle(
                             backgroundColor: WidgetStateProperty.all<Color>(kPrimaryColor),

@@ -1,41 +1,40 @@
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
-Users usersFromMap(String str) => Users.fromMap(json.decode(str));
+  UserModel usersFromMap(String str, String docId) => UserModel.fromMap(json.decode(str), docId);
 
-String usersToMap(Users data) => json.encode(data.toMap());
+String usersToMap(UserModel data) => json.encode(data.toMap());
 
-class Users {
-  final String id;
+class UserModel {
+  final String uid;
   final String name;
   final String email;
-  final String profileImageUrl;
-  final String headline;
-  final String location;
-  final String bio;
-  final String company;
-  final String experience;
-  final String education;
-  final List<String> skills;
-  final List<String> connections;
+  final String? profileImageUrl;
+  final String? headline;
+  final String? location;
+  final String? bio;
+  final String? company;
+  final String? experience;
+  final String? education;
+  final List<String>? skills;
+  final List<String>? connections;
 
-  Users({
-    required this.id,
+  UserModel({
+    required this.uid,
     required this.name,
     required this.email,
-    required this.profileImageUrl,
-    required this.headline,
-    required this.location,
-    required this.bio,
-    required this.company,
-    required this.experience,
-    required this.education,
-    required this.skills,
-    required this.connections,
+    this.profileImageUrl,
+    this.headline,
+    this.location,
+    this.bio,
+    this.company,
+    this.experience,
+    this.education,
+    this.skills,
+    this.connections,
   });
 
-  factory Users.fromMap(Map<String, dynamic> json) => Users(
-    id: json["id"],
+  factory UserModel.fromMap(Map<String, dynamic> json, String docId) => UserModel(
+    uid: json["uid"],
     name: json["name"],
     email: json["email"],
     profileImageUrl: json["profileImageUrl"],
@@ -45,12 +44,16 @@ class Users {
     company: json["company"],
     experience: json["experience"],
     education: json["education"],
-    skills: List<String>.from(json["skills"].map((x) => x)),
-    connections: List<String>.from(json["connections"].map((x) => x)),
+    skills: json["skills"] != null
+      ? List<String>.from(json["skills"].map((x) => x))
+      : null,
+    connections: json["connections"] != null
+      ? List<String>.from(json["connections"].map((x) => x))
+      : null,
   );
 
   Map<String, dynamic> toMap() => {
-    "id": id,
+    "uid": uid,
     "name": name,
     "email": email,
     "profileImageUrl": profileImageUrl,
@@ -60,7 +63,7 @@ class Users {
     "company": company,
     "experience": experience,
     "education": education,
-    "skills": List<dynamic>.from(skills.map((x) => x)),
-    "connections": List<dynamic>.from(connections.map((x) => x)),
+    "skills": skills != null ? List<dynamic>.from(skills!.map((x) => x)) : null,
+    "connections": connections != null ? List<dynamic>.from(connections!.map((x) => x)) : null,
   };
 }
