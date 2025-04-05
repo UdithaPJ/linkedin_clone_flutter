@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:linkedin_clone_flutter/core/utils/constants.dart';
+import 'package:linkedin_clone_flutter/core/utils/validators.dart';
 import 'package:linkedin_clone_flutter/ui/views/forgotpassword_page.dart';
+import 'package:linkedin_clone_flutter/ui/views/main_page.dart';
+import 'package:linkedin_clone_flutter/ui/views/profile_page.dart';
 import 'package:linkedin_clone_flutter/ui/views/signup_page.dart';
 import 'package:linkedin_clone_flutter/ui/views/home_page.dart';
 import 'package:linkedin_clone_flutter/viewmodels/auth_viewmodel.dart';
@@ -17,6 +20,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _formKey = GlobalKey<FormState>();
   bool _isMarkedRemember = false;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -218,96 +222,113 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       SizedBox(height: 20),
-                      TextFormField(
-                        controller: _emailController,
-                        decoration: InputDecoration(
-                          labelText: "Email or Phone*",
-                        ),
-                      ),
-                      SizedBox(height: 30),
-                      TextFormField(
-                        controller: _passwordController,
-                        decoration: InputDecoration(
-                          labelText: "Password*",
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Checkbox(
-                            activeColor: Color(0xFF006a43),
-                            value: _isMarkedRemember, onChanged: (value) {
-                            setState(() {
-                              _isMarkedRemember = value!;
-                            });
-                          },
-                          ),
-                          Text.rich(
-                            TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: "Remembre me. ",
-                                    style: TextStyle(
-                                      color: Colors.grey[800],
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: "Learn more",
-                                    style: TextStyle(
-                                      color: kPrimaryColor,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ]
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextFormField(
+                              controller: _emailController,
+                              decoration: InputDecoration(
+                                labelText: "Email or Phone*",
+                              ),
+                              validator: (value) => Validators.validateEmail(value),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotpasswordPage(),),);
-                        },
-                        child: Text("Forgot password?",
-                          style: TextStyle(
-                            color: kPrimaryColor,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 15),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 55,
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await authViewModel.signIn(_emailController.text.trim(), _passwordController.text.trim());
-                            print('Logged in successfully!');
-                            print(authViewModel.user);
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(),),);
-                            // if(authViewModel.user != null) {
-                            //   Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(),),);
-                            // }
-                          },
-                          style: ButtonStyle(
-                            backgroundColor: WidgetStateProperty.all<Color>(kPrimaryColor),
-                            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25),
-                                side: BorderSide(color: kPrimaryColor),
+                            SizedBox(height: 30),
+                            TextFormField(
+                              controller: _passwordController,
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                labelText: "Password*",
+                              ),
+                              validator: (value) => Validators.validatePassword(value),
+                            ),
+                            SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Checkbox(
+                                  activeColor: Color(0xFF006a43),
+                                  value: _isMarkedRemember, onChanged: (value) {
+                                  setState(() {
+                                    _isMarkedRemember = value!;
+                                  });
+                                },
+                                ),
+                                Text.rich(
+                                  TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: "Remembre me. ",
+                                          style: TextStyle(
+                                            color: Colors.grey[800],
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: "Learn more",
+                                          style: TextStyle(
+                                            color: kPrimaryColor,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ]
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotpasswordPage(),),);
+                              },
+                              child: Text("Forgot password?",
+                                style: TextStyle(
+                                  color: kPrimaryColor,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
-                          ),
-                          child: Text("Continue",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
+                            SizedBox(height: 15),
+                            SizedBox(
+                              width: double.infinity,
+                              height: 55,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  if(_formKey.currentState!.validate()) {
+                                    try {
+                                      await authViewModel.signIn(_emailController.text.trim(), _passwordController.text.trim());
+                                      print('Logged in successfully!');
+                                      print(authViewModel.user);
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(),),);
+                                      if(authViewModel.user != null) {
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(),),);
+                                      }
+                                    } catch (e) {
+                                      throw Exception('Authentication error login: $e');
+                                    }
+                                  }
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor: WidgetStateProperty.all<Color>(kPrimaryColor),
+                                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(25),
+                                      side: BorderSide(color: kPrimaryColor),
+                                    ),
+                                  ),
+                                ),
+                                child: Text("Continue",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                       ),
                     ],
