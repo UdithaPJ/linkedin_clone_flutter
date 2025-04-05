@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:linkedin_clone_flutter/core/utils/constants.dart';
 import 'package:linkedin_clone_flutter/core/utils/validators.dart';
 import 'package:linkedin_clone_flutter/ui/views/forgotpassword_page.dart';
-import 'package:linkedin_clone_flutter/ui/views/profile_page.dart';
 import 'package:linkedin_clone_flutter/ui/views/signup_page.dart';
 import 'package:linkedin_clone_flutter/ui/views/home_page.dart';
 import 'package:linkedin_clone_flutter/viewmodels/auth_viewmodel.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -298,8 +295,6 @@ class _LoginPageState extends State<LoginPage> {
                               child: ElevatedButton(
                                 onPressed: () async {
                                   if(_formKey.currentState!.validate()) {
-                                    SharedPreferences prefs = await SharedPreferences.getInstance();
-                                    await prefs.setBool('isLoggedIn', true);
                                     try {
                                       if(authViewModel.user != null) {
                                         await authViewModel.signIn(_emailController.text.trim(), _passwordController.text.trim(), _isMarkedRemember);
