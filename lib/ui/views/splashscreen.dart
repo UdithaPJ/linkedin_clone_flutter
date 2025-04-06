@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:linkedin_clone_flutter/ui/views/home_page.dart';
-import 'package:linkedin_clone_flutter/ui/views/login_page.dart';
-import 'package:linkedin_clone_flutter/ui/views/welcome_page.dart';
+import '../../config/app_routes.dart';
 import '../../core/services/localstorage_service.dart';
 import 'loading.dart';
 
@@ -28,14 +26,15 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(const Duration(seconds: 2));
     if(hasWelcomed) {
       if(isLoggedIn) {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(),),);
+        Navigator.pushNamed(context, AppRoutes.main);
+
       }
       else {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage(),),);
+        Navigator.pushNamed(context, AppRoutes.login);
       }
     }
     else {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => WelcomePage(),),);
+      Navigator.pushNamed(context, AppRoutes.welcome);
     }
   }
 

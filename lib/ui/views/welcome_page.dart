@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:linkedin_clone_flutter/core/utils/constants.dart';
-import 'package:linkedin_clone_flutter/ui/views/login_page.dart';
-import 'package:linkedin_clone_flutter/ui/views/signup_page1.dart';
+import '../../config/app_routes.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
@@ -78,7 +77,7 @@ class WelcomePage extends StatelessWidget {
                       height: 55,
                       child: ElevatedButton(
                         onPressed: () {
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage(),),);
+                          Navigator.pushNamed(context, AppRoutes.signup);
                         },
                         style: ButtonStyle(
                           backgroundColor: WidgetStateProperty.all<Color>(kPrimaryColor),
@@ -114,7 +113,7 @@ class WelcomePage extends StatelessWidget {
                       height: 55,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage(),),);
+                          Navigator.pushNamed(context, AppRoutes.login);
                         },
                         style: ButtonStyle(
                           backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
@@ -190,7 +189,7 @@ class WelcomePage extends StatelessWidget {
                     ),),
                   InkWell(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage1(),),);
+                      Navigator.pushNamed(context, AppRoutes.signup1);
                     },
                     child: Text("Join now",
                       style: TextStyle(

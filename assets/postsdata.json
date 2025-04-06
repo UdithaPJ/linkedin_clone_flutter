@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "uid": "user1",
+    "headline": "Exciting New Project Launched!",
+    "description": "We have just launched a new project at TechCorp, and we're excited to share it with the world!",
+    "tags": "#tech #launch #innovation",
+    "imageUrl": "assets/post-image1.jpg",
+    "likes": 120,
+    "comments": 45
+  },
+  {
+    "id": 2,
+    "uid": "user2",
+    "headline": "Exploring the Future of UX Design",
+    "description": "Excited to be speaking at the upcoming UX Design conference. I'll be sharing insights on the latest trends in design.",
+    "tags": "#UX #design #conference",
+    "imageUrl": "assets/post-image2.jpg",
+    "likes": 85,
+    "comments": 30
+  },
+  {
+    "id": 3,
+    "uid": "user3",
+    "headline": "New Product Manager Role at InnovateInc",
+    "description": "I'm thrilled to join InnovateInc as a Product Manager. Looking forward to working on cutting-edge tech!",
+    "tags": "#productmanagement #career #innovation",
+    "imageUrl": "assets/post-image3.jpg",
+    "likes": 102,
+    "comments": 55
+  },
+  {
+    "id": 4,
+    "uid": "user4",
+    "headline": "Backend Developer Tips & Tricks",
+    "description": "Here's a collection of backend development tips for developers looking to optimize their APIs and systems.",
+    "tags": "#backend #developer #tips",
+    "imageUrl": null,
+    "likes": 210,
+    "comments": 72
+  },
+  {
+    "id": 5,
+    "uid": "user5",
+    "headline": "Marketing Strategies for 2025",
+    "description": "Excited to share my insights on upcoming marketing strategies for the year 2025. Watch out for my upcoming webinar!",
+    "tags": "#marketing #strategy #2025",
+    "imageUrl": "assets/post-image4.jpg",
+    "likes": 95,
+    "comments": 50
+  }
+]

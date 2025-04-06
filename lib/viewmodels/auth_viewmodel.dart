@@ -16,42 +16,40 @@ class AuthViewModel extends ChangeNotifier {
   UserModel? get user => _user;
   bool get isLoading => _isLoading;
 
-  Future<void> signUp(String name, String email, String password, bool isMarkedRemember) async {
+  Future<void> signUp(String name, String email, String password, bool isMarkedRemember, BuildContext context) async {
     _isLoading = true;
     notifyListeners();
 
-    _user = await _authService.signUp(name, email, password);
+    _user = await _authService.signUp(name, email, password, context);
     if(isMarkedRemember) {
       await _localStorageService.setLoggedIn(true);
       await _localStorageService.setUserUid(_user!.uid);
     }
+    await _localStorageService.setWelcomed(true);
 
     _isLoading = false;
     notifyListeners();
   }
 
-  Future<void> signIn(String email, String password, bool isMarkedRemember) async {
+  Future<void> signIn(String email, String password, bool isMarkedRemember, BuildContext context) async {
     _isLoading = true;
     notifyListeners();
 
-    _user = await _authService.signIn(email, password);
+    _user = await _authService.signIn(email, password, context);
     if(isMarkedRemember) {
       await _localStorageService.setLoggedIn(true);
       await _localStorageService.setUserUid(_user!.uid);
     }
+    await _localStorageService.setWelcomed(true);
 
     _isLoading = false;
     notifyListeners();
   }
 
-  Future<void> fetchUserData(String uid) async {
-    final UserModel user = await _userService.getUserByUid(uid);
-  }
-
-  Future<void> signOut() async {
+  Future<void> signOut(BuildContext context) async {
     await _localStorageService.clearLoggedIn();
     await _localStorageService.clearUserUid();
-    await _authService.signOut();
+    await _authService.signOut(context);
     _user = null;
     notifyListeners();
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:linkedin_clone_flutter/config/app_routes.dart';
 import 'package:linkedin_clone_flutter/core/utils/constants.dart';
 import 'package:linkedin_clone_flutter/ui/views/login_page.dart';
 
@@ -33,14 +34,7 @@ class _LoginPageState extends State<SignupPage> {
                     height: 35,
                   ),
                 ),
-                SizedBox(height: 30),
-                LinearProgressIndicator(
-                  value: 0.1,
-                  semanticsLabel: 'Linear progress indicator',
-                  backgroundColor: Colors.white,
-                  color: Colors.green,
-                ),
-                SizedBox(height: 40),
+                SizedBox(height: 70),
                 Padding(padding: EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,7 +59,7 @@ class _LoginPageState extends State<SignupPage> {
                             padding: EdgeInsets.only(left: 5),
                             child: InkWell(
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage(),),);
+                                Navigator.pushNamed(context, AppRoutes.login);
                               },
                               child: Text("Sign in",
                                 style: TextStyle(

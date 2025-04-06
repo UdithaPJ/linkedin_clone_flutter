@@ -9,28 +9,34 @@ class UserModel {
   final String name;
   final String email;
   final String? profileImageUrl;
+  final String? bannerImageUrl;
   final String? headline;
   final String? location;
   final String? bio;
   final String? company;
-  final String? experience;
   final String? education;
   final List<String>? skills;
-  final List<String>? connections;
+  final int? noOfFollowers;
+  final int? noOfConnections;
+  final int? noOfProfileViews;
+  final int? noOfImpressions;
 
   UserModel({
     required this.uid,
     required this.name,
     required this.email,
     this.profileImageUrl,
+    this.bannerImageUrl,
     this.headline,
     this.location,
     this.bio,
     this.company,
-    this.experience,
     this.education,
     this.skills,
-    this.connections,
+    this.noOfFollowers,
+    this.noOfConnections,
+    this.noOfProfileViews,
+    this.noOfImpressions,
   });
 
   factory UserModel.fromMap(Map<String, dynamic> json, String docId) => UserModel(
@@ -38,18 +44,19 @@ class UserModel {
     name: json["name"],
     email: json["email"],
     profileImageUrl: json["profileImageUrl"],
+    bannerImageUrl: json["bannerImageUrl"],
     headline: json["headline"],
     location: json["location"],
     bio: json["bio"],
     company: json["company"],
-    experience: json["experience"],
     education: json["education"],
     skills: json["skills"] != null
       ? List<String>.from(json["skills"].map((x) => x))
       : null,
-    connections: json["connections"] != null
-      ? List<String>.from(json["connections"].map((x) => x))
-      : null,
+    noOfFollowers: json["noOfFollowers"],
+    noOfConnections: json["noOfConnections"],
+    noOfProfileViews: json["noOfProfileViews"],
+    noOfImpressions: json["noOfImpressions"],
   );
 
   Map<String, dynamic> toMap() => {
@@ -57,13 +64,16 @@ class UserModel {
     "name": name,
     "email": email,
     "profileImageUrl": profileImageUrl,
+    "bannerImageUrl": bannerImageUrl,
     "headline": headline,
     "location": location,
     "bio": bio,
     "company": company,
-    "experience": experience,
     "education": education,
     "skills": skills != null ? List<dynamic>.from(skills!.map((x) => x)) : null,
-    "connections": connections != null ? List<dynamic>.from(connections!.map((x) => x)) : null,
+    "noOfFollowers": noOfFollowers,
+    "noOfConnections": noOfConnections,
+    "noOfProfileViews": noOfProfileViews,
+    "noOfImpressions": noOfImpressions,
   };
 }

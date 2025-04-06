@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:linkedin_clone_flutter/ui/views/signup_page2.dart';
+import 'package:linkedin_clone_flutter/config/app_routes.dart';
 import 'package:provider/provider.dart';
-
 import '../../core/utils/constants.dart';
 import '../../core/utils/validators.dart';
 import '../../viewmodels/signup_viewmodel.dart';
@@ -15,7 +14,6 @@ class SignupPage1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final signupViewModel = Provider.of<SignupViewModel>(context);
 
     return SafeArea(
         child: Scaffold(
@@ -39,12 +37,6 @@ class SignupPage1 extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        LinearProgressIndicator(
-                          value: 0.1,
-                          semanticsLabel: 'Linear progress indicator',
-                          backgroundColor: Colors.white,
-                          color: Colors.green,
-                        ),
                         SizedBox(height: 50),
                         Text("Add your name",
                           style: TextStyle(
@@ -77,30 +69,33 @@ class SignupPage1 extends StatelessWidget {
                                 SizedBox(
                                   width: double.infinity,
                                   height: 55,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      if(_formKey.currentState!.validate()) {
-                                        final signupData = signupViewModel.signupData;
-                                        signupViewModel.updateName(_firstnameController.text.trim(), _lastnameController.text.trim());
-                                        print(signupData.fullName);
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage2(),),);
-                                      }
-                                    },
-                                    style: ButtonStyle(
-                                      backgroundColor: WidgetStateProperty.all<Color>(kPrimaryColor),
-                                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(25),
-                                          side: BorderSide(color: kPrimaryColor),
+                                  child: Consumer<SignupViewModel>(
+                                    builder: (context, signupViewModel, child) {
+                                      return ElevatedButton(
+                                        onPressed: () {
+                                          if(_formKey.currentState!.validate()) {
+                                            final signupData = signupViewModel.signupData;
+                                            signupViewModel.updateName(_firstnameController.text.trim(), _lastnameController.text.trim());
+                                            Navigator.pushNamed(context, AppRoutes.signup2);
+                                          }
+                                        },
+                                        style: ButtonStyle(
+                                          backgroundColor: WidgetStateProperty.all<Color>(kPrimaryColor),
+                                          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                                            RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(25),
+                                              side: BorderSide(color: kPrimaryColor),
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                    child: Text("Continue",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                      ),
-                                    ),
+                                        child: Text("Continue",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                      );
+                                    }
                                   ),
                                 ),
                               ],

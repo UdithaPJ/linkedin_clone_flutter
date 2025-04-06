@@ -2,6 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:linkedin_clone_flutter/ui/views/home_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+void printAllSharedPreferences() async {
+  final prefs = await SharedPreferences.getInstance();
+  final allKeys = prefs.getKeys(); // Get all stored keys
+
+  print('--- SharedPreferences Contents ---');
+  for (String key in allKeys) {
+    dynamic value = prefs.get(key); // Gets the value (dynamic type)
+    print('$key: $value (${value.runtimeType})');
+  }
+}
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -28,10 +40,18 @@ class _MainPageState extends State<MainPage> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    printAllSharedPreferences();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
           bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
             backgroundColor: Colors.white,
             iconSize: 22,
             selectedItemColor: Colors.black,

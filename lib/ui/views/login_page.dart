@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:linkedin_clone_flutter/core/utils/constants.dart';
 import 'package:linkedin_clone_flutter/core/utils/validators.dart';
-import 'package:linkedin_clone_flutter/ui/views/forgotpassword_page.dart';
-import 'package:linkedin_clone_flutter/ui/views/signup_page.dart';
-import 'package:linkedin_clone_flutter/ui/views/home_page.dart';
 import 'package:linkedin_clone_flutter/viewmodels/auth_viewmodel.dart';
 import 'package:provider/provider.dart';
+
+import '../../config/app_routes.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -18,13 +17,12 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  bool _isMarkedRemember = false;
+  bool _isMarkedRemember = true;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final authViewModel = Provider.of<AuthViewModel>(context);
 
     return SafeArea(
       child: Scaffold(
@@ -68,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                             padding: EdgeInsets.only(left: 5),
                             child: InkWell(
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage(),),);
+                                Navigator.pushNamed(context, AppRoutes.signup);
                               },
                               child: Text("Join LinkedIn",
                                 style: TextStyle(
@@ -86,9 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                         width: double.infinity,
                         height: 55,
                         child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage(),),);
-                          },
+                          onPressed: () {},
                           style: ButtonStyle(
                             backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
                             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
@@ -122,9 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                         width: double.infinity,
                         height: 55,
                         child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage(),),);
-                          },
+                          onPressed: () {},
                           style: ButtonStyle(
                             backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
                             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
@@ -158,9 +152,7 @@ class _LoginPageState extends State<LoginPage> {
                         width: double.infinity,
                         height: 55,
                         child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage(),),);
-                          },
+                          onPressed: () {},
                           style: ButtonStyle(
                             backgroundColor: WidgetStateProperty.all<Color>(Colors.white),
                             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
@@ -249,6 +241,7 @@ class _LoginPageState extends State<LoginPage> {
                                   value: _isMarkedRemember, onChanged: (value) {
                                   setState(() {
                                     _isMarkedRemember = value!;
+                                    print(_isMarkedRemember);
                                   });
                                 },
                                 ),
@@ -278,7 +271,7 @@ class _LoginPageState extends State<LoginPage> {
                             SizedBox(height: 10),
                             InkWell(
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotpasswordPage(),),);
+                                Navigator.pushNamed(context, AppRoutes.forgotpassword);
                               },
                               child: Text("Forgot password?",
                                 style: TextStyle(
@@ -292,34 +285,41 @@ class _LoginPageState extends State<LoginPage> {
                             SizedBox(
                               width: double.infinity,
                               height: 55,
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  if(_formKey.currentState!.validate()) {
-                                    try {
-                                      if(authViewModel.user != null) {
-                                        await authViewModel.signIn(_emailController.text.trim(), _passwordController.text.trim(), _isMarkedRemember);
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(),),);
+                              child: Consumer<AuthViewModel>(
+                                builder: (context, authViewModel, child){
+                                  return ElevatedButton(
+                                    onPressed: () async {
+                                      if(_formKey.currentState!.validate()) {
+                                        try {
+                                          await authViewModel.signIn(_emailController.text.trim(), _passwordController.text.trim(), _isMarkedRemember, context);
+                                          if(authViewModel.user != null) {
+                                            Navigator.pushNamed(context, AppRoutes.main);
+                                          }
+                                          else {
+                                            throw Exception('Authentication error login');
+                                          }
+                                        } catch (e) {
+                                          throw Exception('Authentication error login: $e');
+                                        }
                                       }
-                                    } catch (e) {
-                                      throw Exception('Authentication error login: $e');
-                                    }
-                                  }
-                                },
-                                style: ButtonStyle(
-                                  backgroundColor: WidgetStateProperty.all<Color>(kPrimaryColor),
-                                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(25),
-                                      side: BorderSide(color: kPrimaryColor),
+                                    },
+                                    style: ButtonStyle(
+                                      backgroundColor: WidgetStateProperty.all<Color>(kPrimaryColor),
+                                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(25),
+                                          side: BorderSide(color: kPrimaryColor),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                                child: Text("Continue",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                  ),
-                                ),
+                                    child: Text("Continue",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  );
+                                }
                               ),
                             ),
                           ],
